@@ -1,27 +1,29 @@
-PoBFrontend
-===========
+# PoBFrontend2
 
-A cross-platform [Path of Building](https://github.com/Openarl/PathOfBuilding) driver.
+A cross-platform [Path of Building 2](https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2)
+driver.
 
-Building
+## Building
+
 --------
 
-### Dependencies:
+### Dependencies
 
-- Qt5
+- Qt6?
 - luajit
 - zlib
 - opengl
 - lua-curl (see below)
-- Bitstream-Vera and Liberation TTF fonts. Will work without these but most likely look terrible.
+- Bitstream-Vera and Liberation TTF fonts. Will work without these but most likely
+look terrible.
 
-### Build dependencies:
+### Build Dependencies
 
 - meson
 - pkg-config
 - ninja (optional, can tell meson to generate makefiles if you prefer)
 
-### Build Lua-Curl:
+### Build Lua-Curl
 
 You need to build [Lua-Curl](https://github.com/Lua-cURL/Lua-cURLv3) for luajit.
 
@@ -38,14 +40,14 @@ Edit the Lua-Curl Makefile:
  
  LUA_VERSION       = $(shell $(PKG_CONFIG) --print-provides --silence-errors $(LUA_IMPL))
 ```
- 
+
 Run make. You should get `lcurl.so`.
 
-### Get the PoBFrontend sources:
+### Get the PoBFrontend sources
 
 `git clone https://github.com/philroberts/pobfrontend.git`
 
-### Build:
+### Build
 
 ```bash
 meson -Dbuildtype=release pobfrontend build
@@ -71,9 +73,10 @@ You can adjust the font size up or down with a command line argument:
 pobfrontend -2
 ```
 
-### Notes:
+### Notes
 
-I have the following edit in my PathOfBuilding clone, stops it from saving builds even when I tell it not to:
+I have the following edit in my PathOfBuilding clone, stops it from saving builds
+even when I tell it not to:
 
 ```diff
 --- a/Modules/Build.lua
@@ -89,7 +92,7 @@ I have the following edit in my PathOfBuilding clone, stops it from saving build
                         elseif self.unsaved then
 ```
 
-###### OS X
+#### OS X
 
 On mac you need to invoke meson with some extra flags, per the luajit documentation:
 
