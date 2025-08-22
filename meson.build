@@ -1,4 +1,4 @@
-project('POB Frontend', 'cpp', default_options : ['cpp_std=c++20'])
+project('POB Frontend 2', 'cpp', default_options : ['cpp_std=c++20'])
 
 qt6_dep = dependency('qt6', modules : ['Gui', 'OpenGL', 'Core'])
 lua_dep = dependency('luajit')
@@ -36,7 +36,7 @@ if meson.get_compiler('cpp').get_id() == 'gcc'
 endif
 extra_args += ['-Wall', '-Os', '-fno-omit-frame-pointer']
 
-executable('pobfrontend',
+executable('pobfrontend2',
   sources : sources + prep,
   dependencies : [gl_dep, qt6_dep, zlib_dep, lua_dep],
   cpp_args: extra_args,
