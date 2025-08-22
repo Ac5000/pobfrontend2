@@ -1,5 +1,8 @@
 # PoBFrontend2
 
+NOTE - This is an attempt at doing the same flatpak build that [ernstp](https://github.com/ernstp)
+did for PoB. Use caution as I don't exactly know what I'm doing...
+
 A cross-platform [Path of Building 2](https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2)
 driver.
 
