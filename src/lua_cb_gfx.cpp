@@ -88,10 +88,13 @@ int l_imgHandleLoad(lua_State *L) {
   return 0;
 }
 
-int l_imgHandleUnload(lua_State *L) {
-  // NOTE: not used in scripts
-  return 0;
-}
+/**
+ * @brief Not used in scripts.
+ *
+ * @param L lua_State of the program
+ * @return 0
+ */
+int l_imgHandleUnload(lua_State *L) { return 0; }
 
 int l_imgHandleIsValid(lua_State *L) {
   imgHandle_s *imgHandle = GetImgHandle(L, "IsValid");
@@ -252,12 +255,33 @@ int l_DrawImage(lua_State *L) {
   }
   float arg[8];
   if (n > 5) {
-    if (n >= 9) {
-      std::cout << "HI";
-    }
-    LAssert(L, n >= 9,
-            "DrawImage(): incomplete set of texture coordinates provided");
+    // if (n >= 9) {
+    //   std::cout << "\n DEBUG n = " << n << "\n";
+    //   std::cout << "\n DEBUG arg[0] = " << arg[0] << "\n";
+    //   std::cout << "\n DEBUG arg[1] = " << arg[1] << "\n";
+    //   std::cout << "\n DEBUG arg[2] = " << arg[2] << "\n";
+    //   std::cout << "\n DEBUG arg[3] = " << arg[3] << "\n";
+    //   std::cout << "\n DEBUG arg[4] = " << arg[4] << "\n";
+    //   std::cout << "\n DEBUG arg[5] = " << arg[5] << "\n";
+    //   std::cout << "\n DEBUG arg[6] = " << arg[6] << "\n";
+    //   std::cout << "\n DEBUG arg[7] = " << arg[7] << "\n";
+    //   std::cout << "\n DEBUG arg[8] = " << arg[8] << "\n";
+    //   // std::cout << "\n DEBUG arg[9] = " << arg[9] << "\n";
+    // }
+    // LAssert(L, n >= 9,
+    //         "DrawImage(): incomplete set of texture coordinates provided");
     for (int i = 2; i <= 9; i++) {
+      if ((i == 6 || i == 7) && !lua_isnumber(L, i)) {
+        arg[i - 2] = 0;
+        continue;
+      }
+      if ((i == 8 || i == 9) && !lua_isnumber(L, i)) {
+        arg[i - 2] = 1.0f;
+        continue;
+      }
+      // DrawImageCmd(TextureIndex tex, float x, float y, float w, float h,
+      //              float s1 = 0, float t1 = 0, float s2 = 1.0f, float t2
+      //              = 1.0f)
       LAssert(L, lua_isnumber(L, i),
               "DrawImage() argument %d: expected number, got %t", i, i);
       arg[i - 2] = (float)lua_tonumber(L, i);
@@ -304,18 +328,34 @@ int l_DrawImageQuad(lua_State *L) {
     tex_idx = imgHandle->tex_idx;
     pobwindow->GetTexture(tex_idx);
   }
-  float arg[16];
+  float arg[18];
   if (n > 9) {
-    LAssert(L, n >= 17,
-            "DrawImageQuad(): incomplete set of texture coordinates provided");
+    LAssert(L, n >= 10,
+            "DrawImageQuad(): incomplete set of texture coordinates provided: "
+            "n = %d",
+            n);
+    // Starting at arg[8], there are default values that we can use in main.h
+    // declaration. Need to add them in here manually though because I'm dumb
+    // and don't know how to use them.
     for (int i = 2; i <= 17; i++) {
+      // If we didn't get the arg, make it default to 0.
+      if ((i == 10 || i == 11 || i == 13 || i == 16) && !lua_isnumber(L, i)) {
+        arg[i] = 0;
+        continue;
+      }
+      // If we didn't get the arg, make it default to 1.
+      if ((i == 12 || i == 14 || i == 15 || i == 17) && !lua_isnumber(L, i)) {
+        arg[i] = 1;
+        continue;
+      }
       LAssert(L, lua_isnumber(L, i),
               "DrawImageQuad() argument %d: expected number, got %t", i, i);
-      arg[i - 2] = (float)lua_tonumber(L, i);
+      arg[i] = (float)lua_tonumber(L, i);
     }
     pobwindow->AppendCmd(std::make_unique<DrawImageQuadCmd>(
-        tex_idx, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7],
-        arg[8], arg[9], arg[10], arg[11], arg[12], arg[13], arg[14], arg[15]));
+        tex_idx, arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9],
+        arg[10], arg[11], arg[12], arg[13], arg[14], arg[15], arg[16],
+        arg[17]));
   } else {
     for (int i = 2; i <= 9; i++) {
       LAssert(L, lua_isnumber(L, i),
