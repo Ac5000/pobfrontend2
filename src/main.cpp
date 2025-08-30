@@ -315,6 +315,18 @@ static int l_IsKeyDown(lua_State *L) {
       result = keys & Qt::ShiftModifier;
     } else if (k == "ALT") {
       result = keys & Qt::AltModifier;
+    } else if (k == "1") {
+      result = keys & Qt::Key_1;
+    } else if (k == "I") {
+      result = keys & Qt::Key_I;
+    } else if (k == "2") {
+      result = keys & Qt::Key_2;
+    } else if (k == "S") {
+      result = keys & Qt::Key_S;
+    } else if (k == "3") {
+      result = keys & Qt::Key_3;
+    } else if (k == "D") {
+      result = keys & Qt::Key_D;
     } else {
       std::cout << "UNKNOWN ISKEYDOWN: " << k.toStdString() << std::endl;
     }
